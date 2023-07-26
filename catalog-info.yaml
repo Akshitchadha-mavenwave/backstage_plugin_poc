@@ -1,10 +1,31 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
+  name: mayo-web
+  description: mayo web app
   annotations:
-    backstage.io/kubernetes-id: my-kubernetes-component
-  name: my-kubernetes-component
+    github.com/project-slug: MavenWave-DevOps/mayo-backstage-dev/
+    backstage.io/kubernetes-id: mayo-backstage-dev
+    backstage.io/techdocs-ref: dir:.
+    argocd/app-name: dev-mayo-backstage-dev
+    grafana/tag-selector: "Kubernetes-mixin"
+    prometheus.io/alert: all
+  
+  tags:
+    - web
+    - mayo-web
+    - frontend
+  links:
+    - url: http://localhost:3000
+      title: Admin Dashboard
+      icon: dashboard
 spec:
-  lifecycle: production
-  owner: my-team
   type: service
+  lifecycle: production
+  owner: group:platform_admin
+  system: mayo-backstage-dev
+  dependsOn: ["resource:mayo-backstage-dev-db", "resource:mayo-backstage-dev-bucket"]
+  providesApis:
+    - mayo-backstage-dev
+  consumesApis:
+    - system:mayo-backstage-dev
